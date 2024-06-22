@@ -15,7 +15,11 @@ const addFood = {
     inventory: { type: new GraphQLNonNull(GraphQLInt) },
     price: { type: new GraphQLNonNull(GraphQLInt) },
   },
-  resolve: async (obj, args) => {
+  resolve: async (obj, args, context) => {
+    const { role } = await verifyUser(context.req);
+    if (role !== "ADMIN") {
+      throw new Error("No Access This Route");
+    }
     const { name, category, inventory, price } = args;
     const newFood = await foodModel.create({
       name,
