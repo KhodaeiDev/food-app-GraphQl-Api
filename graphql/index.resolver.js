@@ -1,10 +1,10 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
-const { CategoriesResolver } = require("./queries/category.resolver");
-const { addCategory } = require("./mutation/category.resolver");
-const { addFood } = require("./mutation/food.resolver");
-const { userRegister } = require("./mutation/user.resolvers");
-const { FoodResolver } = require("./queries/food.resolver");
-const { UserResolver } = require("./queries/user.resolver");
+const { CategoriesResolver } = require("./queries/category.resolvers");
+const { addCategory } = require("./mutation/category.resolvers");
+const { addFood } = require("./mutation/food.resolvers");
+const { userRegister, userLogin } = require("./mutation/user.resolvers");
+const { FoodResolver } = require("./queries/food.resolvers");
+const { UserResolver } = require("./queries/user.resolvers");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
@@ -21,6 +21,7 @@ const RootMutation = new GraphQLObjectType({
     addCategory,
     addFood,
     userRegister,
+    userLogin,
   },
 });
 

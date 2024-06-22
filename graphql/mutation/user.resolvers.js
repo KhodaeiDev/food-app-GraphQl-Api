@@ -29,9 +29,42 @@ const userRegister = {
       role: userCount.length > 0 ? "USER" : "ADMIN",
     });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_KEY);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_KEY, {
+      expiresIn: "7day",
+    });
     return { token, user };
   },
 };
 
-module.exports = { userRegister };
+const userLogin = {
+  type: AuthType,
+  args: {
+    email: { type: new GraphQLNonNull(GraphQLString) },
+    password: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async (obj, args) => {
+    const { email, password } = args;
+    //Todo => Validator
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      throw new Error("User Email or Password invalid");
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      throw new Error("User Email or Password invalid");
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_KEY, {
+      expiresIn: "7day",
+    });
+
+    return {
+      token,
+      user,
+    };
+  },
+};
+
+module.exports = { userRegister, userLogin };
