@@ -10,6 +10,7 @@ const {
   deliverOrder,
   removeOrder,
 } = require("./mutation/order.resolvers");
+const { OrderResolver, OrdersResolver } = require("./queries/order.resolvers");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
@@ -17,6 +18,8 @@ const RootQuery = new GraphQLObjectType({
     Categories: CategoriesResolver,
     foods: FoodResolver,
     users: UserResolver,
+    orders: OrdersResolver,
+    order: OrderResolver,
   },
 });
 
