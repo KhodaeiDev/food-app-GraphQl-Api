@@ -42,7 +42,21 @@ const deliverOrder = {
   },
 };
 
+const removeOrder = {
+  type: OrderType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLID) },
+  },
+  resolve: async (_, args) => {
+    return await orderModel
+      .findOneAndDelete({ _id: args.id })
+      .populate("user")
+      .populate("food");
+  },
+};
+
 module.exports = {
   createOrder,
   deliverOrder,
+  removeOrder,
 };
